@@ -8,7 +8,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
