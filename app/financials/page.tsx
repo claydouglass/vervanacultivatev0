@@ -1,5 +1,3 @@
-// src/app/financials/page.tsx
-
 "use client";
 
 import React, { useState } from 'react';
@@ -8,7 +6,7 @@ import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings } from 'luci
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 const batchData = {
   "Kandy Terpz (Room 101)": [
@@ -60,14 +58,46 @@ export default function Financials() {
 
   return (
     <div className="flex h-screen bg-background text-foreground">
-      {/* Sidebar code remains the same */}
       <aside className="w-64 bg-card text-card-foreground border-r border-border">
-        {/* ... (sidebar code) ... */}
+        <div className="p-6">
+          <h2 className="text-lg font-semibold mb-4">Vervana Cultivate</h2>
+          <nav className="space-y-2">
+            <Link href="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <BarChart className="w-4 h-4" />
+              <span>Dashboard</span>
+            </Link>
+            <Link href="/rooms" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <Leaf className="w-4 h-4" />
+              <span>Rooms</span>
+            </Link>
+            <Link href="/financials" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <DollarSign className="w-4 h-4" />
+              <span>Financials</span>
+            </Link>
+            <Link href="/processing" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <ClipboardList className="w-4 h-4" />
+              <span>Processing</span>
+            </Link>
+            <Link href="/staff" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <Users className="w-4 h-4" />
+              <span>Staff</span>
+            </Link>
+            <Link href="/settings" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+              <Settings className="w-4 h-4" />
+              <span>Settings</span>
+            </Link>
+          </nav>
+        </div>
       </aside>
       <main className="flex-1 overflow-y-auto p-6">
         <h2 className="text-2xl font-semibold mb-6">Financials</h2>
         <div className="mb-4">
-          <Select onValueChange={setSelectedBatch} defaultValue={selectedBatch}>
+          <Select
+            options={Object.keys(batchData)}
+            defaultValue={selectedBatch}
+            onValueChange={setSelectedBatch}
+            placeholder="Select batch"
+          >
             <SelectTrigger className="w-[280px]">
               <SelectValue placeholder="Select batch" />
             </SelectTrigger>
