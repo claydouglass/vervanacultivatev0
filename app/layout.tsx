@@ -1,22 +1,31 @@
 // app/layout.tsx
-import './globals.css';
-import localFont from 'next/font/local';
-import { ReactNode } from 'react';
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css"; // Corrected import path
 
-const geistMono = localFont({
-  src: '/fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const geistSans = localFont({
+  src: "../public/fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
 });
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+const geistMono = localFont({
+  src: "../public/fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export const metadata: Metadata = {
+  title: "Vervana Cultivate",
+  description: "Streamlining cultivation with advanced tracking",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={geistMono.variable}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+      >
         {children}
       </body>
     </html>
