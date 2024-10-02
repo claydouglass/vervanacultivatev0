@@ -6,7 +6,7 @@ import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings } from 'luci
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 
 const batchData = {
   "Kandy Terpz (Room 101)": [
@@ -33,19 +33,20 @@ const batchData = {
     { category: "Clones/Seeds", cost: 0.07 },
     { category: "Other Inputs", cost: 0.04 },
   ],
-};
+} as const;
+
+type BatchName = keyof typeof batchData;
 
 const previousBatchData = {
   "Kandy Terpz (Room 101)": { min: 1.40, max: 1.55 },
   "Papaya Terpz (Room 102)": { min: 1.25, max: 1.35 },
   "Mint Terpz (Room 103)": { min: 1.30, max: 1.40 },
-};
+} as const;
 
-// Updated color palette
 const COLORS = ['#6366F1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
 
 export default function Financials() {
-  const [selectedBatch, setSelectedBatch] = useState("Kandy Terpz (Room 101)");
+  const [selectedBatch, setSelectedBatch] = useState<BatchName>("Kandy Terpz (Room 101)");
   const currentBatchData = batchData[selectedBatch];
   const totalCost = currentBatchData.reduce((sum, item) => sum + item.cost, 0);
 
@@ -93,20 +94,11 @@ export default function Financials() {
         <h2 className="text-2xl font-semibold mb-6">Financials</h2>
         <div className="mb-4">
           <Select
-            options={Object.keys(batchData)}
+            options={Object.keys(batchData) as BatchName[]}
             defaultValue={selectedBatch}
-            onValueChange={setSelectedBatch}
+            onValueChange={(value) => setSelectedBatch(value as BatchName)}
             placeholder="Select batch"
-          >
-            <SelectTrigger className="w-[280px]">
-              <SelectValue placeholder="Select batch" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.keys(batchData).map((batch) => (
-                <SelectItem key={batch} value={batch}>{batch}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
@@ -173,8 +165,8 @@ export default function Financials() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Object.entries(batchData).map(([batchName, data]) => {
-                  const currentCost = data.reduce((sum, item) => sum + item.cost, 0);
+                {(Object.keys(batchData) as BatchName[]).map((batchName) => {
+                  const currentCost = batchData[batchName].reduce((sum, item) => sum + item.cost, 0);
                   const { min, max } = previousBatchData[batchName];
                   const avgPreviousCost = (min + max) / 2;
                   const difference = ((currentCost - avgPreviousCost) / avgPreviousCost * 100).toFixed(1);
