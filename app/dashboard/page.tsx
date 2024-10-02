@@ -329,7 +329,7 @@ export default function Dashboard() {
               {/* Today's Staff Tasks */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Today's Staff Tasks</CardTitle>
+                  <CardTitle>Staff Tasks for Today</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
