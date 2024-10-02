@@ -98,16 +98,22 @@ Currently, we have 5 active batches across 3 cultivation rooms, the drying room 
 
 // Initial Staff Tasks Data
 const initialStaffTasks = [
-  { name: 'Derek Jamieson', tasks: [
-    { text: 'Prune Room 101', done: false },
-    { text: 'Check nutrient levels in Room 102', done: false }
-    { text: 'Monitor drying process', done: false },
-    { text: 'Update inventory', done: false }
-  ]},
-  { name: 'Justin Ambar', tasks: [
-    { text: 'Prepare Room 103 for flowering transition', done: false },
-    { text: 'Conduct pest inspection', done: false }
-  ]},
+  { 
+    name: 'Derek Jamieson', 
+    tasks: [
+      { text: 'Prune Room 101', done: false },
+      { text: 'Check nutrient levels in Room 102', done: false },
+      { text: 'Monitor drying process', done: false },
+      { text: 'Update inventory', done: false }
+    ]
+  },
+  { 
+    name: 'Justin Ambar', 
+    tasks: [
+      { text: 'Prepare Room 103 for flowering transition', done: false },
+      { text: 'Conduct pest inspection', done: false }
+    ]
+  }
 ];
 
 // Initial Recommendations Data
