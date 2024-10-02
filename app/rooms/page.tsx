@@ -59,7 +59,7 @@ const rooms = [
     ppfd: 800,
     co2: 1050,
     vpd: 1.2,
-    flowerImage: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2010.jpg",
+    flowerImage: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2040.jpg",
     flowerAnalysis: "Mint Terpz is experiencing healthy vegetative growth, with robust leaf development and strong root systems. The plants show no signs of nutrient deficiencies or pest issues.",
     aiSuggestions: [
       "Maintain current nutrient levels to support continued vegetative growth.",
