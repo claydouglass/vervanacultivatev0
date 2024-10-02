@@ -56,18 +56,8 @@ export const Select: React.FC<SelectProps> = ({ options, defaultValue, onValueCh
   );
 };
 
-export const SelectTrigger: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  return <>{children}</>;
-};
-
-export const SelectValue: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  return <>{children}</>;
-};
-
-export const SelectContent: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  return <>{children}</>;
-};
-
-export const SelectItem: React.FC<React.PropsWithChildren<{ value: string }>> = ({ children, value }) => {
-  return <>{children}</>;
-};
+// These components are not used in the current implementation, but we'll keep them as no-ops for compatibility
+export const SelectTrigger: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ children }) => <>{children}</>;
+export const SelectValue: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ children }) => <>{children}</>;
+export const SelectContent: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ children }) => <>{children}</>;
+export const SelectItem: React.FC<React.PropsWithChildren<{ value: string }>> = ({ children }) => <>{children}</>;
