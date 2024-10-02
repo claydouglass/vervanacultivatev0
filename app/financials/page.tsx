@@ -58,41 +58,41 @@ export default function Financials() {
   ];
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      <aside className="w-64 bg-card text-card-foreground border-r border-border">
+    <div className="flex h-screen bg-gray-100">
+      <aside className="w-64 bg-white shadow-md">
         <div className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Vervana Cultivate</h2>
-          <nav className="space-y-2">
-            <Link href="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <BarChart className="w-4 h-4" />
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Vervana Cultivate</h2>
+          <nav className="space-y-4">
+            <Link href="/dashboard" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <BarChart className="w-5 h-5" />
               <span>Dashboard</span>
             </Link>
-            <Link href="/rooms" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <Leaf className="w-4 h-4" />
+            <Link href="/rooms" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <Leaf className="w-5 h-5" />
               <span>Rooms</span>
             </Link>
-            <Link href="/financials" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <DollarSign className="w-4 h-4" />
+            <Link href="/financials" className="flex items-center space-x-2 text-blue-600 font-semibold">
+              <DollarSign className="w-5 h-5" />
               <span>Financials</span>
             </Link>
-            <Link href="/processing" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <ClipboardList className="w-4 h-4" />
+            <Link href="/processing" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <ClipboardList className="w-5 h-5" />
               <span>Processing</span>
             </Link>
-            <Link href="/staff" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <Users className="w-4 h-4" />
+            <Link href="/staff" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <Users className="w-5 h-5" />
               <span>Staff</span>
             </Link>
-            <Link href="/settings" className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-              <Settings className="w-4 h-4" />
+            <Link href="/settings" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <Settings className="w-5 h-5" />
               <span>Settings</span>
             </Link>
           </nav>
         </div>
       </aside>
-      <main className="flex-1 overflow-y-auto p-6">
-        <h2 className="text-2xl font-semibold mb-6">Financials</h2>
-        <div className="mb-4">
+      <main className="flex-1 overflow-y-auto p-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Financials</h2>
+        <div className="mb-6">
           <Select
             options={Object.keys(batchData) as BatchName[]}
             defaultValue={selectedBatch}
@@ -100,32 +100,32 @@ export default function Financials() {
             placeholder="Select batch"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card>
             <CardHeader>
-              <CardTitle>{selectedBatch}</CardTitle>
+              <CardTitle className="text-xl font-semibold">{selectedBatch} Cost Breakdown</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Cost ($)</TableHead>
-                    <TableHead>% of Total</TableHead>
+                    <TableHead className="w-1/3">Category</TableHead>
+                    <TableHead className="w-1/3 text-right">Cost ($)</TableHead>
+                    <TableHead className="w-1/3 text-right">% of Total</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {currentBatchData.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item.category}</TableCell>
-                      <TableCell>{item.cost.toFixed(2)}</TableCell>
-                      <TableCell>{((item.cost / totalCost) * 100).toFixed(1)}%</TableCell>
+                      <TableCell className="font-medium">{item.category}</TableCell>
+                      <TableCell className="text-right">{item.cost.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">{((item.cost / totalCost) * 100).toFixed(1)}%</TableCell>
                     </TableRow>
                   ))}
                   <TableRow className="font-bold">
                     <TableCell>Total</TableCell>
-                    <TableCell>{totalCost.toFixed(2)}</TableCell>
-                    <TableCell>100%</TableCell>
+                    <TableCell className="text-right">{totalCost.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">100%</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -133,9 +133,9 @@ export default function Financials() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>{selectedBatch}</CardTitle>
+              <CardTitle className="text-xl font-semibold">{selectedBatch} Cost Visualization</CardTitle>
             </CardHeader>
-            <CardContent className="h-[500px]">
+            <CardContent className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsBarChart data={chartData}>
                   <XAxis dataKey="name" />
@@ -150,18 +150,18 @@ export default function Financials() {
             </CardContent>
           </Card>
         </div>
-        <Card className="mt-6">
+        <Card className="mt-8">
           <CardHeader>
-            <CardTitle>Batch Comparison</CardTitle>
+            <CardTitle className="text-xl font-semibold">Batch Comparison</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Batch</TableHead>
-                  <TableHead>Current Cost</TableHead>
-                  <TableHead>Previous Cost Range</TableHead>
-                  <TableHead>Difference</TableHead>
+                  <TableHead className="text-right">Current Cost</TableHead>
+                  <TableHead className="text-right">Previous Cost Range</TableHead>
+                  <TableHead className="text-right">Difference</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -172,10 +172,10 @@ export default function Financials() {
                   const difference = ((currentCost - avgPreviousCost) / avgPreviousCost * 100).toFixed(1);
                   return (
                     <TableRow key={batchName}>
-                      <TableCell>{batchName}</TableCell>
-                      <TableCell>${currentCost.toFixed(2)}</TableCell>
-                      <TableCell>${min.toFixed(2)} - ${max.toFixed(2)}</TableCell>
-                      <TableCell className={Number(difference) > 0 ? 'text-red-500' : 'text-green-500'}>
+                      <TableCell className="font-medium">{batchName}</TableCell>
+                      <TableCell className="text-right">${currentCost.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">${min.toFixed(2)} - ${max.toFixed(2)}</TableCell>
+                      <TableCell className={`text-right ${Number(difference) > 0 ? 'text-red-500' : 'text-green-500'}`}>
                         {difference}%
                       </TableCell>
                     </TableRow>
