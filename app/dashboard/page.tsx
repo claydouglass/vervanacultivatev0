@@ -143,9 +143,35 @@ const upcomingDeadlines = [
   { event: 'Begin drying process for harvested Papaya Terpz', date: '2024-10-16' },
 ];
 
+// Define a more flexible type for recommendations
+type Recommendation = { text: string; done: boolean };
+type RecommendationsState = Record<string, Recommendation[]>;
+
 export default function Dashboard() {
   const [staffTasks, setStaffTasks] = useState(initialStaffTasks);
-  const [recommendations, setRecommendations] = useState(initialRecommendations);
+  const [recommendations, setRecommendations] = useState<RecommendationsState>({
+    "Room 101": [
+      { text: "Increase PPFD to 1150 μmol/m²/s to maximize trichome production", done: false },
+      { text: "Gradually reduce humidity to 50% over the next 5 days", done: false },
+    ],
+    "Room 102": [
+      { text: "Begin flushing nutrients to improve final flavor profile", done: false },
+      { text: "Reduce temperature slightly to enhance purple coloration in the buds", done: false },
+    ],
+    "Room 103": [
+      { text: "Begin planning for training to encourage lateral growth", done: false },
+      { text: "Increase nitrogen levels by 10% to support rapid vegetative growth", done: false },
+    ],
+    "Drying Room": [
+      { text: "Maintain humidity at 60% and temperature at 16°C", done: false },
+      { text: "Ensure proper air circulation to prevent mold growth", done: false },
+    ],
+    "Curing Room": [
+      { text: "Monitor humidity levels daily, aiming for 62%", done: false },
+      { text: "Rotate jars every 12 hours for the first week", done: false },
+    ],
+      // ... other rooms
+  });
 
   // Handler to toggle task completion status
   const toggleTaskDone = (staffIndex: number, taskIndex: number) => {
@@ -155,12 +181,12 @@ export default function Dashboard() {
   };
 
   // Handler to toggle recommendation completion status
-  const toggleRecommendationDone = (room: string, index: number) => {
+  const toggleRecommendation = (room: string, index: number) => {
     setRecommendations(prev => ({
       ...prev,
-      [room]: prev[room].map((rec, i) => 
+      [room]: prev[room]?.map((rec, i) => 
         i === index ? { ...rec, done: !rec.done } : rec
-      )
+      ) || []
     }));
   };
 
@@ -379,7 +405,7 @@ export default function Dashboard() {
                               <Checkbox
                                 id={`rec-${room}-${index}`}
                                 checked={rec.done}
-                                onCheckedChange={() => toggleRecommendationDone(room, index)}
+                                onCheckedChange={() => toggleRecommendation(room, index)}
                                 className="mt-1"
                               />
                               <label
