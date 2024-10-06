@@ -27,7 +27,7 @@ const RoomDetails = () => {
     ppfd: 1100,
     co2: 1210,
     vpd: 1.5,
-    flowerImage: "/placeholder.svg?height=300&width=300",
+    flowerImage: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2010.jpg",
     flowerAnalysis: "Example flower analysis.",
     aiSuggestions: [
       "Example suggestion 1.",

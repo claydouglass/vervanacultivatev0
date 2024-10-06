@@ -173,262 +173,221 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-card text-card-foreground border-r border-border">
-        <div className="flex items-center justify-center h-16 border-b border-border">
-          <h1 className="text-xl font-semibold">Vervana Cultivate</h1>
-        </div>
-        <nav className="mt-6">
-          <Link href="/dashboard" className="flex items-center px-4 py-2 text-primary bg-accent">
-            <BarChart className="w-5 h-5 mr-3" />
-            Dashboard
-          </Link>
-          <Link href="/rooms" className="flex items-center px-4 py-2 mt-2 text-foreground hover:bg-accent">
-            <Leaf className="w-5 h-5 mr-3" />
-            Rooms
-          </Link>
-          <Link href="/financials" className="flex items-center px-4 py-2 mt-2 text-primary bg-accent">
-            <DollarSign className="w-5 h-5 mr-3" />
-            Financials
-          </Link>
-          <Link href="/processing" className="flex items-center px-4 py-2 mt-2 text-foreground hover:bg-accent">
-            <ClipboardList className="w-5 h-5 mr-3" />
-            Processing
-          </Link>
-          <Link href="/staff" className="flex items-center px-4 py-2 mt-2 text-foreground hover:bg-accent">
-            <Users className="w-5 h-5 mr-3" />
-            Staff
-          </Link>
-          <Link href="/settings" className="flex items-center px-4 py-2 mt-2 text-foreground hover:bg-accent">
-            <Settings className="w-5 h-5 mr-3" />
-            Settings
-          </Link>
-        </nav>
-      </aside>
+    <main className="flex-1 overflow-y-auto">
+      <header className="flex items-center justify-between p-4 bg-background border-b border-border h-16">
+        <h2 className="text-2xl font-semibold">Dashboard</h2>
+        <Avatar>
+          <AvatarImage src="/images/placeholder-user.jpg" alt="User" />
+          <AvatarFallback>JD</AvatarFallback>
+        </Avatar>
+      </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto">
-        {/* Header */}
-        <header className="flex items-center justify-between p-4 bg-background border-b border-border h-16">
-          <h2 className="text-2xl font-semibold">Dashboard</h2>
-          <Avatar>
-            <AvatarImage src="/images/placeholder-user.jpg" alt="User" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-        </header>
-
-        {/* Scrollable Content */}
-        <ScrollArea className="h-[calc(100vh-4rem)]">
-          <div className="p-6 space-y-6">
-            
-            {/* Headline Metrics Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Overall Quality */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Overall Quality</CardTitle>
-                  <BarChart className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{headlineMetrics.overallQuality}/10</div>
-                  <Progress value={headlineMetrics.overallQuality * 10} className="mt-2" />
-                  <p className="text-xs text-muted-foreground mt-2">
-                    <Link href="/quality" className="underline">View Quality Details</Link>
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Monthly Yield */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Monthly Yield</CardTitle>
-                  <Leaf className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{headlineMetrics.monthlyYield} kg</div>
-                  <Progress value={(headlineMetrics.monthlyYield / 150) * 100} className="mt-2" />
-                  <p className="text-xs text-muted-foreground mt-2">
-                    <Link href="/yield" className="underline">View Yield Details</Link>
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Active Batches */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Batches</CardTitle>
-                  <ClipboardList className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{headlineMetrics.activeBatches}</div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    <Link href="/batches" className="underline">View All Batches</Link>
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Upcoming Harvests */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Upcoming Harvests</CardTitle>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{headlineMetrics.upcomingHarvests}</div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    <Link href="/schedule" className="underline">View Schedule</Link>
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Overview Section */}
+      <ScrollArea className="h-[calc(100vh-4rem)]">
+        <div className="p-6 space-y-6">
+          {/* Headline Metrics Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Overall Quality */}
             <Card>
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Overall Quality</CardTitle>
+                <BarChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <p>{summary}</p>
+                <div className="text-2xl font-bold">{headlineMetrics.overallQuality}/10</div>
+                <Progress value={headlineMetrics.overallQuality * 10} className="mt-2" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  <Link href="/quality" className="underline">View Quality Details</Link>
+                </p>
               </CardContent>
             </Card>
 
-            {/* Quality and Yield by Batch Section */}
+            {/* Monthly Yield */}
             <Card>
-              <CardHeader>
-                <CardTitle>Quality and Yield by Batch</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Monthly Yield</CardTitle>
+                <Leaf className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {rooms.map((room) => (
-                    <div key={room.id} className="flex flex-col items-center">
-                      <Image
-                        src={room.image}
-                        alt={`${room.strain} flower`}
-                        width={200}
-                        height={150}
-                        className="rounded-md mb-4"
-                        style={{ objectFit: 'cover' }}
-                        unoptimized // Add this to bypass Next.js image optimization for external URLs
-                      />
-                      <div className="text-center">
-                        <h3 className="font-medium text-lg" style={{ color: room.color }}>
-                          {room.strain} ({room.name})
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          Quality: {room.quality}/10 | Yield: {room.yield} kg
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Day {room.day} of {room.stage}
-                        </p>
-                        <Button variant="outline" size="sm" asChild className="mt-2">
-                          <Link href={`/room/${room.id}`}>View Details</Link>
-                        </Button>
-                      </div>
+                <div className="text-2xl font-bold">{headlineMetrics.monthlyYield} kg</div>
+                <Progress value={(headlineMetrics.monthlyYield / 150) * 100} className="mt-2" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  <Link href="/yield" className="underline">View Yield Details</Link>
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Active Batches */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Active Batches</CardTitle>
+                <ClipboardList className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{headlineMetrics.activeBatches}</div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  <Link href="/batches" className="underline">View All Batches</Link>
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Upcoming Harvests */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Upcoming Harvests</CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{headlineMetrics.upcomingHarvests}</div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  <Link href="/schedule" className="underline">View Schedule</Link>
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Overview Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>{summary}</p>
+            </CardContent>
+          </Card>
+
+          {/* Quality and Yield by Batch Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quality and Yield by Batch</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rooms.map((room) => (
+                  <div key={room.id} className="flex flex-col items-center">
+                    <Image
+                      src={room.image}
+                      alt={`${room.strain} flower`}
+                      width={200}
+                      height={150}
+                      className="rounded-md mb-4"
+                      style={{ objectFit: 'cover' }}
+                      unoptimized // Add this to bypass Next.js image optimization for external URLs
+                    />
+                    <div className="text-center">
+                      <h3 className="font-medium text-lg" style={{ color: room.color }}>
+                        {room.strain} ({room.name})
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Quality: {room.quality}/10 | Yield: {room.yield} kg
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Day {room.day} of {room.stage}
+                      </p>
+                      <Button variant="outline" size="sm" asChild className="mt-2">
+                        <Link href={`/room/${room.id}`}>View Details</Link>
+                      </Button>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Staff Tasks and Recommendations Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Today's Staff Tasks */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Staff Tasks for Today</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {staffTasks.map((staff, staffIndex) => (
-                      <div key={staffIndex}>
-                        <h4 className="font-semibold">{staff.name}</h4>
-                        <ul className="mt-2 space-y-2">
-                          {staff.tasks.map((task, taskIndex) => (
-                            <li key={taskIndex} className="flex items-start space-x-2">
-                              <Checkbox
-                                id={`task-${staffIndex}-${taskIndex}`}
-                                checked={task.done}
-                                onCheckedChange={() => toggleTaskDone(staffIndex, taskIndex)}
-                                className="mt-1"
-                              />
-                              <label
-                                htmlFor={`task-${staffIndex}-${taskIndex}`}
-                                className={`text-sm ${task.done ? 'line-through text-muted-foreground' : ''}`}
-                              >
-                                {task.text}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
                   </div>
-                  <Button variant="outline" size="sm" asChild className="mt-2">
-                    <Link href="/staff">View All Staff</Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-              {/* Recommendations */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recommendations</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {Object.entries(recommendations).map(([room, recs]) => (
-                      <div key={room}>
-                        <h4 className="font-semibold mb-2">{room}</h4>
-                        <ul className="space-y-2">
-                          {recs.map((rec, index) => (
-                            <li key={index} className="flex items-start space-x-2">
-                              <Checkbox
-                                id={`rec-${room}-${index}`}
-                                checked={rec.done}
-                                onCheckedChange={() => toggleRecommendation(room, index)}
-                                className="mt-1"
-                              />
-                              <label
-                                htmlFor={`rec-${room}-${index}`}
-                                className={`text-sm ${rec.done ? 'line-through text-muted-foreground' : ''}`}
-                              >
-                                {rec.text}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Upcoming Deadlines Section */}
+          {/* Staff Tasks and Recommendations Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Today's Staff Tasks */}
             <Card>
               <CardHeader>
-                <CardTitle>Upcoming Deadlines</CardTitle>
+                <CardTitle>Staff Tasks for Today</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {upcomingDeadlines.map((deadline, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">{deadline.event}</p>
-                        <p className="text-sm text-muted-foreground">{deadline.date}</p>
-                      </div>
-                      <Button variant="outline" size="sm">Set Reminder</Button>
+                  {staffTasks.map((staff, staffIndex) => (
+                    <div key={staffIndex}>
+                      <h4 className="font-semibold">{staff.name}</h4>
+                      <ul className="mt-2 space-y-2">
+                        {staff.tasks.map((task, taskIndex) => (
+                          <li key={taskIndex} className="flex items-start space-x-2">
+                            <Checkbox
+                              id={`task-${staffIndex}-${taskIndex}`}
+                              checked={task.done}
+                              onCheckedChange={() => toggleTaskDone(staffIndex, taskIndex)}
+                              className="mt-1"
+                            />
+                            <label
+                              htmlFor={`task-${staffIndex}-${taskIndex}`}
+                              className={`text-sm ${task.done ? 'line-through text-muted-foreground' : ''}`}
+                            >
+                              {task.text}
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" size="sm" asChild className="mt-2">
+                  <Link href="/staff">View All Staff</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Recommendations */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Recommendations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {Object.entries(recommendations).map(([room, recs]) => (
+                    <div key={room}>
+                      <h4 className="font-semibold mb-2">{room}</h4>
+                      <ul className="space-y-2">
+                        {recs.map((rec, index) => (
+                          <li key={index} className="flex items-start space-x-2">
+                            <Checkbox
+                              id={`rec-${room}-${index}`}
+                              checked={rec.done}
+                              onCheckedChange={() => toggleRecommendation(room, index)}
+                              className="mt-1"
+                            />
+                            <label
+                              htmlFor={`rec-${room}-${index}`}
+                              className={`text-sm ${rec.done ? 'line-through text-muted-foreground' : ''}`}
+                            >
+                              {rec.text}
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-
           </div>
-        </ScrollArea>
-      </main>
-    </div>
+
+          {/* Upcoming Deadlines Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Upcoming Deadlines</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {upcomingDeadlines.map((deadline, index) => (
+                  <div key={index} className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">{deadline.event}</p>
+                      <p className="text-sm text-muted-foreground">{deadline.date}</p>
+                    </div>
+                    <Button variant="outline" size="sm">Set Reminder</Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </ScrollArea>
+    </main>
   );
 }
