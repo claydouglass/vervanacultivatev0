@@ -3,12 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Line } from 'react-chartjs-2';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+// Define more specific types for better type safety
+type Ranking = {
+  date: string; // Assuming date is a string, could also use Date type if applicable
+  rank: number;
+};
+
+type Competitor = {
+  name: string;
+  rank: number;
+};
+
 type Props = {
   product: string;
   market: string;
   indication: string;
-  rankings: any[]; // Consider defining a more specific type
-  competitors: any[]; // Consider defining a more specific type
+  rankings: Ranking[];
+  competitors: Competitor[];
 };
 
 const goals = ['Anxiety Relief', 'Pain Management', 'Sleep Aid', 'Relaxation', 'Focus'];
@@ -16,6 +27,7 @@ const goals = ['Anxiety Relief', 'Pain Management', 'Sleep Aid', 'Relaxation', '
 const ProductRankings: React.FC<Props> = ({ product, market, indication, rankings, competitors }) => {
   const [timeScale, setTimeScale] = useState('1M');
 
+  // Callback to generate analysis text based on current ranking data
   const generateMainChartAnalysis = useCallback(() => {
     if (!rankings || rankings.length === 0) {
       return "No ranking data available.";
@@ -34,8 +46,11 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
     Key factors influencing this trend may include recent product improvements, marketing efforts, or shifts in consumer preferences.`;
   }, [rankings, competitors, product, market, indication]);
 
+  // Memoized chart data to avoid unnecessary recalculations
   const mainChartData = useMemo(() => {
-    if (!rankings || rankings.length === 0) return {};
+    if (!rankings || rankings.length === 0) {
+      return { labels: [], datasets: [] };
+    }
     return {
       labels: rankings.map(r => r.date),
       datasets: [
@@ -71,14 +86,12 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
         </div>
         
         {rankings && rankings.length > 0 ? (
-          <Line data={mainChartData} options={{}} className="mb-6" />
+          <Line data={mainChartData} options={{ responsive: true, maintainAspectRatio: false }} className="mb-6" />
         ) : (
           <p>No ranking data available.</p>
         )}
         
         <p className="mb-6">{generateMainChartAnalysis()}</p>
-        
-        {/* ... rest of your component ... */}
       </CardContent>
     </Card>
   );
