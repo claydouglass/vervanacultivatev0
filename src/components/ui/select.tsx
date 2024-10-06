@@ -1,6 +1,11 @@
+// components/ui/select.tsx
+
+'use client';
+
 import React, { useState } from 'react';
 
-interface Option {
+// Export the Option interface so it can be imported elsewhere
+export interface Option {
   label: string;
   value: string;
 }
@@ -23,7 +28,7 @@ export const Select: React.FC<SelectProps> = ({ options, defaultValue, onValueCh
   };
 
   const selectedOptionLabel =
-    options?.find((option) => option.value === selectedValue)?.label || placeholder || 'Select option';
+    options.find((option) => option.value === selectedValue)?.label || placeholder || 'Select option';
 
   return (
     <div className="relative inline-block text-left w-[180px]">
@@ -50,7 +55,7 @@ export const Select: React.FC<SelectProps> = ({ options, defaultValue, onValueCh
         </button>
       </div>
 
-      {isOpen && options && (
+      {isOpen && (
         <div className="absolute mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
           <div className="py-1">
             {options.map((option) => (

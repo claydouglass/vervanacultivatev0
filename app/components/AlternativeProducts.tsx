@@ -1,7 +1,15 @@
+// components/AlternativeProducts.tsx
+
 'use client';
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+interface AlternativeProductsProps {
+  product: string;
+  batch: string;
+  market: string;
+}
 
 type Batch = {
   batchNumber: string;
@@ -71,7 +79,13 @@ const alternativeProducts: Product[] = [
   // Add more alternative products here
 ];
 
-export default function AlternativeProducts() {
+const AlternativeProducts: React.FC<AlternativeProductsProps> = ({ product, batch, market }) => {
+  // You can use the props to filter or customize the displayed products
+  // For example, exclude the currently selected product
+  const filteredProducts = alternativeProducts.filter(
+    (p) => p.name !== product
+  );
+
   return (
     <Card className="mb-8">
       <CardHeader>
@@ -79,25 +93,49 @@ export default function AlternativeProducts() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {alternativeProducts.map((product) => (
+          {filteredProducts.map((product) => (
             <div key={product.id} className="p-4 border rounded-lg">
               <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-              <p><strong>Strain:</strong> {product.strain}</p>
-              <p><strong>THC:</strong> {product.thcContent}% | <strong>CBD:</strong> {product.cbdContent}%</p>
+              <p>
+                <strong>Strain:</strong> {product.strain}
+              </p>
+              <p>
+                <strong>THC:</strong> {product.thcContent}% |{' '}
+                <strong>CBD:</strong> {product.cbdContent}%
+              </p>
               <div className="mt-4">
                 <h4 className="font-medium">Current Batch:</h4>
-                <p><strong>Batch:</strong> {product.currentBatch.batchNumber}</p>
-                <p><strong>Cultivator:</strong> {product.currentBatch.cultivator}</p>
-                <p><strong>Location:</strong> {product.currentBatch.location}</p>
-                <p><strong>Release Date:</strong> {product.currentBatch.releaseDate}</p>
-                <p><strong>Available:</strong> {product.currentBatch.availability} units</p>
+                <p>
+                  <strong>Batch:</strong> {product.currentBatch.batchNumber}
+                </p>
+                <p>
+                  <strong>Cultivator:</strong> {product.currentBatch.cultivator}
+                </p>
+                <p>
+                  <strong>Location:</strong> {product.currentBatch.location}
+                </p>
+                <p>
+                  <strong>Release Date:</strong> {product.currentBatch.releaseDate}
+                </p>
+                <p>
+                  <strong>Available:</strong> {product.currentBatch.availability} units
+                </p>
               </div>
               {product.previousBatches.length > 0 && (
                 <div className="mt-4">
                   <h4 className="font-medium">Previous Batch:</h4>
-                  <p><strong>Batch:</strong> {product.previousBatches[0].batchNumber}</p>
-                  <p><strong>Release Date:</strong> {product.previousBatches[0].releaseDate}</p>
-                  <p><strong>Available:</strong> {product.previousBatches[0].availability} units</p>
+                  <p>
+                    <strong>Batch:</strong>{' '}
+                    {product.previousBatches[0].batchNumber}
+                  </p>
+                  <p>
+                    <strong>Release Date:</strong>{' '}
+                    {product.previousBatches[0].releaseDate}
+                  </p>
+                  <p>
+                    <strong>Available:</strong>{' '}
+                    {product.previousBatches[0].availability} units
+                  </p>
                 </div>
               )}
             </div>
@@ -106,4 +144,6 @@ export default function AlternativeProducts() {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default AlternativeProducts;

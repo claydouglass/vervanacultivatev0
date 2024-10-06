@@ -1,3 +1,5 @@
+// components/ProductMetrics.tsx
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -8,7 +10,7 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
+  Title as ChartTitle,
   Tooltip,
   Legend,
 } from 'chart.js';
@@ -17,10 +19,16 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
+  ChartTitle,
   Tooltip,
   Legend
 );
+
+interface ProductMetricsProps {
+  product: string;
+  batch: string;
+  market: string;
+}
 
 type SocialMetrics = {
   likes: number;
@@ -56,12 +64,13 @@ type Product = {
   geographies: Geography[];
 };
 
-export default function ProductMetrics() {
-  const [products, setProducts] = useState<Product[]>([]);
+const ProductMetrics: React.FC<ProductMetricsProps> = ({ product, batch, market }) => {
+  const [productData, setProductData] = useState<Product | null>(null);
 
   useEffect(() => {
+    // Simulate fetching data based on props
     setTimeout(() => {
-      setProducts([
+      const mockProducts: Product[] = [
         {
           id: '1',
           name: 'Kandy Terpz',
@@ -87,32 +96,42 @@ export default function ProductMetrics() {
             { country: 'CA', socialMetrics: { likes: 1000, comments: 200, views: 4000, shares: 280, rating: 4.8, wishlist: 160 } },
           ],
         },
-        // ... (add similar data for other products)
-      ]);
-    }, 1000);
-  }, []);
+        // Add similar data for other products
+      ];
 
+      const selectedProduct = mockProducts.find((p) => p.name === product);
+      if (selectedProduct) {
+        setProductData(selectedProduct);
+      }
+    }, 1000);
+  }, [product, batch, market]);
+
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
+
+  // Prepare batch data for the chart
   const batchData = {
-    labels: ['KT-2023-05-A', 'BD-2023-06-B', 'GSC-2023-07-C', 'AK-2023-08-D'],
+    labels: [productData.currentBatch.batchNumber],
     datasets: [
       {
         label: 'Likes',
-        data: [3000, 2500, 3500, 2800],
+        data: [productData.currentBatch.socialMetrics.likes],
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
       {
         label: 'Comments',
-        data: [550, 480, 620, 530],
+        data: [productData.currentBatch.socialMetrics.comments],
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
       },
       {
         label: 'Views',
-        data: [12000, 10000, 13000, 11000],
+        data: [productData.currentBatch.socialMetrics.views],
         backgroundColor: 'rgba(255, 159, 64, 0.6)',
       },
       {
         label: 'Wishlist',
-        data: [450, 400, 500, 420],
+        data: [productData.currentBatch.socialMetrics.wishlist],
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
       },
     ],
@@ -120,111 +139,111 @@ export default function ProductMetrics() {
 
   return (
     <div className="space-y-8">
-      {products.map((product) => (
-        <Card key={product.id} className="overflow-hidden">
-          <CardHeader className="bg-gray-50">
-            <CardTitle className="text-2xl">{product.name}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Product Details</h3>
-                <div className="space-y-2">
-                  <p><span className="font-medium">Lineage:</span> {product.lineage}</p>
-                  <p><span className="font-medium">THC:</span> {product.thcContent}% | <span className="font-medium">CBD:</span> {product.cbdContent}%</p>
-                  <p><span className="font-medium">Total Terpenes:</span> {product.totalTerpenes}%</p>
-                  <p><span className="font-medium">Current Batch:</span> {product.currentBatch.batchNumber}</p>
-                  <p><span className="font-medium">Harvest Date:</span> {product.currentBatch.harvestDate}</p>
-                  <p><span className="font-medium">Room:</span> {product.currentBatch.room}</p>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Terpene Profile</h3>
-                <div className="space-y-2">
-                  {Object.entries(product.terpeneProfile).map(([terpene, value]) => (
-                    <div key={terpene} className="flex justify-between">
-                      <span className="capitalize">{terpene}:</span>
-                      <span>{value}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-2">Social Engagement</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div className="text-center p-2 bg-blue-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.likes}</p>
-                  <p className="text-sm">Likes</p>
-                </div>
-                <div className="text-center p-2 bg-green-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.comments}</p>
-                  <p className="text-sm">Comments</p>
-                </div>
-                <div className="text-center p-2 bg-yellow-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.views}</p>
-                  <p className="text-sm">Views</p>
-                </div>
-                <div className="text-center p-2 bg-purple-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.shares}</p>
-                  <p className="text-sm">Shares</p>
-                </div>
-                <div className="text-center p-2 bg-pink-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.rating}</p>
-                  <p className="text-sm">Rating</p>
-                </div>
-                <div className="text-center p-2 bg-indigo-100 rounded">
-                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.wishlist}</p>
-                  <p className="text-sm">Wishlist</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-2">Production Decisions</h3>
+      <Card className="overflow-hidden">
+        <CardHeader className="bg-gray-50">
+          <CardTitle className="text-2xl">{productData.name}</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Product Details</h3>
               <div className="space-y-2">
-                <p><span className="font-medium">Cultivation:</span> {product.cultivationDecisions.join(', ')}</p>
-                <p><span className="font-medium">Processing:</span> {product.processingDecisions.join(', ')}</p>
-                <p><span className="font-medium">Logistics:</span> {product.logisticsDecisions.join(', ')}</p>
+                <p><span className="font-medium">Lineage:</span> {productData.lineage}</p>
+                <p><span className="font-medium">THC:</span> {productData.thcContent}% | <span className="font-medium">CBD:</span> {productData.cbdContent}%</p>
+                <p><span className="font-medium">Total Terpenes:</span> {productData.totalTerpenes}%</p>
+                <p><span className="font-medium">Current Batch:</span> {productData.currentBatch.batchNumber}</p>
+                <p><span className="font-medium">Harvest Date:</span> {productData.currentBatch.harvestDate}</p>
+                <p><span className="font-medium">Room:</span> {productData.currentBatch.room}</p>
               </div>
             </div>
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-2">Geographical Performance</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="text-left p-2">Country</th>
-                      <th className="text-right p-2">Likes</th>
-                      <th className="text-right p-2">Comments</th>
-                      <th className="text-right p-2">Views</th>
-                      <th className="text-right p-2">Shares</th>
-                      <th className="text-right p-2">Rating</th>
-                      <th className="text-right p-2">Wishlist</th>
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Terpene Profile</h3>
+              <div className="space-y-2">
+                {Object.entries(productData.terpeneProfile).map(([terpene, value]) => (
+                  <div key={terpene} className="flex justify-between">
+                    <span className="capitalize">{terpene}:</span>
+                    <span>{value}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">Social Engagement</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="text-center p-2 bg-blue-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.likes}</p>
+                <p className="text-sm">Likes</p>
+              </div>
+              <div className="text-center p-2 bg-green-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.comments}</p>
+                <p className="text-sm">Comments</p>
+              </div>
+              <div className="text-center p-2 bg-yellow-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.views}</p>
+                <p className="text-sm">Views</p>
+              </div>
+              <div className="text-center p-2 bg-purple-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.shares}</p>
+                <p className="text-sm">Shares</p>
+              </div>
+              <div className="text-center p-2 bg-pink-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.rating}</p>
+                <p className="text-sm">Rating</p>
+              </div>
+              <div className="text-center p-2 bg-indigo-100 rounded">
+                <p className="text-2xl font-bold">{productData.currentBatch.socialMetrics.wishlist}</p>
+                <p className="text-sm">Wishlist</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">Production Decisions</h3>
+            <div className="space-y-2">
+              <p><span className="font-medium">Cultivation:</span> {productData.cultivationDecisions.join(', ')}</p>
+              <p><span className="font-medium">Processing:</span> {productData.processingDecisions.join(', ')}</p>
+              <p><span className="font-medium">Logistics:</span> {productData.logisticsDecisions.join(', ')}</p>
+            </div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">Geographical Performance</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="text-left p-2">Country</th>
+                    <th className="text-right p-2">Likes</th>
+                    <th className="text-right p-2">Comments</th>
+                    <th className="text-right p-2">Views</th>
+                    <th className="text-right p-2">Shares</th>
+                    <th className="text-right p-2">Rating</th>
+                    <th className="text-right p-2">Wishlist</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productData.geographies.map((geo, index) => (
+                    <tr key={index} className="border-t">
+                      <td className="p-2">{geo.country}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.likes}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.comments}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.views}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.shares}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.rating}</td>
+                      <td className="text-right p-2">{geo.socialMetrics.wishlist}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {product.geographies.map((geo, index) => (
-                      <tr key={index} className="border-t">
-                        <td className="p-2">{geo.country}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.likes}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.comments}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.views}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.shares}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.rating}</td>
-                        <td className="text-right p-2">{geo.socialMetrics.wishlist}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-4">Social Engagement by Batch</h3>
-              <Bar data={batchData} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+          </div>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-4">Social Engagement by Batch</h3>
+            <Bar data={batchData} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
-}
+};
+
+export default ProductMetrics;

@@ -1,10 +1,12 @@
-"use client";
+// app/financials/page.tsx
+
+'use client';
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Select } from "@/components/ui/select";
+import { Select, Option } from "@/components/ui/select";
 
 const batchData = {
   "Kandy Terpz (Room 101)": [
@@ -60,7 +62,10 @@ export default function Financials() {
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Financials</h2>
       <div className="mb-6">
         <Select
-          options={Object.keys(batchData) as BatchName[]}
+          options={Object.keys(batchData).map((batchName) => ({
+            label: batchName,
+            value: batchName,
+          }))}
           defaultValue={selectedBatch}
           onValueChange={(value) => setSelectedBatch(value as BatchName)}
           placeholder="Select batch"

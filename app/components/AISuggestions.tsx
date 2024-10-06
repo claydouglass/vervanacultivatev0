@@ -1,7 +1,16 @@
+// components/AISuggestions.tsx
+
 'use client';
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+interface AISuggestionsProps {
+  product: string;
+  batch: string;
+  market: string;
+  goal: string;
+}
 
 type Suggestion = {
   cultivationSuggestions: string[];
@@ -48,42 +57,55 @@ const mockProductData: ProductData[] = [
   // Add more products here
 ];
 
-export default function AISuggestions() {
+const AISuggestions: React.FC<AISuggestionsProps> = ({ product, batch, market, goal }) => {
+  // Find the product and batch to get specific suggestions
+  const selectedProduct = mockProductData.find(p => p.name === product);
+  const selectedBatch = selectedProduct?.batches.find(b => b.name === batch);
+
+  if (!selectedBatch) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>AI-Generated Product Improvement Suggestions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>No suggestions available for the selected batch.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>AI-Generated Product Improvement Suggestions</CardTitle>
       </CardHeader>
       <CardContent>
-        {mockProductData.map((product) => (
-          <div key={product.id} className="mb-8 p-6 border rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">Product: {product.name}</h3>
-            {product.batches.map((batch) => (
-              <div key={batch.id} className="mb-4">
-                <h4 className="text-lg font-medium mb-2">Batch: {batch.name}</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                  <div>
-                    <h5 className="font-medium mb-2">Cultivation Suggestions:</h5>
-                    <ul className="list-disc pl-5 mb-4">
-                      {batch.suggestions.cultivationSuggestions.map((s, index) => (
-                        <li key={index} className="mb-1">{s}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h5 className="font-medium mb-2">Processing Suggestions:</h5>
-                    <ul className="list-disc pl-5 mb-4">
-                      {batch.suggestions.processingSuggestions.map((s, index) => (
-                        <li key={index} className="mb-1">{s}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="mb-8 p-6 border rounded-lg shadow-lg">
+          <h3 className="text-xl font-semibold mb-2">Product: {product}</h3>
+          <h4 className="text-lg font-medium mb-2">Batch: {batch}</h4>
+          <h5 className="font-medium mb-2">Market: {market}</h5>
+          <h5 className="font-medium mb-2">Goal: {goal}</h5>
+          <div className="mt-4">
+            <h5 className="font-medium mb-2">Cultivation Suggestions:</h5>
+            <ul className="list-disc pl-5">
+              {selectedBatch.suggestions.cultivationSuggestions.map((suggestion, index) => (
+                <li key={index} className="mb-2">{suggestion}</li>
+              ))}
+            </ul>
           </div>
-        ))}
+          <div className="mt-4">
+            <h5 className="font-medium mb-2">Processing Suggestions:</h5>
+            <ul className="list-disc pl-5">
+              {selectedBatch.suggestions.processingSuggestions.map((suggestion, index) => (
+                <li key={index} className="mb-2">{suggestion}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
-}
+};
+
+export default AISuggestions;
