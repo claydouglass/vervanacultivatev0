@@ -103,11 +103,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </div>
         <div className="p-4 border-t border-gray-200 flex items-center justify-between">
-          <Link href="/profile">
-            <div className="flex items-center cursor-pointer">
-              <img src="/images/avatar.jpg" alt="User Avatar" className="w-8 h-8 rounded-full" />
-            </div>
-          </Link>
           <Link href="/help" className="text-gray-700 hover:text-black">
             <HelpCircle className="w-5 h-5" />
           </Link>
