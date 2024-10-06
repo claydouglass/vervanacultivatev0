@@ -1,17 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select } from "@/components/ui/select";
 import ProductMetrics from '../components/ProductMetrics';
-import Recommendations from '../components/Recommendations';
 import PerformanceCharts from '../components/PerformanceCharts';
 import ProductRankings from '../components/ProductRankings';
 import AlternativeProducts from '../components/AlternativeProducts';
 import AISuggestions from '../components/AISuggestions';
-import DetailedBatchView from '../components/DetailedBatchView';
 
 const products = ['Kandy Terpz', 'Blue Dream Haze', 'OG Kush Premium'];
 const batches = ['KT-2023-05-A', 'BD-2023-06-B', 'OGK-2023-07-A'];
@@ -23,15 +19,37 @@ const ConsumerPage: React.FC = () => {
   const [selectedBatch, setSelectedBatch] = useState(batches[0]);
   const [selectedMarket, setSelectedMarket] = useState(markets[0]);
   const [selectedGoal, setSelectedGoal] = useState(goals[0]);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // ... rest of your component logic ...
 
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">Consumer Insights</h1>
-      
-      {/* ... your existing select components ... */}
+
+      <div className="flex space-x-4 mb-6">
+        <Select
+          options={products.map(product => ({ label: product, value: product }))}
+          defaultValue={selectedProduct}
+          onValueChange={setSelectedProduct}
+          placeholder="Select Product"
+        />
+        <Select
+          options={batches.map(batch => ({ label: batch, value: batch }))}
+          defaultValue={selectedBatch}
+          onValueChange={setSelectedBatch}
+          placeholder="Select Batch"
+        />
+        <Select
+          options={markets.map(market => ({ label: market, value: market }))}
+          defaultValue={selectedMarket}
+          onValueChange={setSelectedMarket}
+          placeholder="Select Market"
+        />
+        <Select
+          options={goals.map(goal => ({ label: goal, value: goal }))}
+          defaultValue={selectedGoal}
+          onValueChange={setSelectedGoal}
+          placeholder="Select Goal"
+        />
+      </div>
 
       <Tabs defaultValue="latest" className="mb-8">
         <TabsList>
@@ -39,10 +57,10 @@ const ConsumerPage: React.FC = () => {
           <TabsTrigger value="podcast">Listen to Latest Podcast</TabsTrigger>
         </TabsList>
         <TabsContent value="latest">
-          {/* ... Latest Insights content ... */}
+          {/* Latest Insights content */}
         </TabsContent>
         <TabsContent value="podcast">
-          {/* ... Podcast content ... */}
+          {/* Podcast content */}
         </TabsContent>
       </Tabs>
 
@@ -62,8 +80,8 @@ const ConsumerPage: React.FC = () => {
         product={selectedProduct}
         market={selectedMarket}
         indication={selectedGoal}
-        rankings={[]} // You should fetch actual data here
-        competitors={[]} // You should fetch actual data here
+        rankings={[]} // Replace with actual data
+        competitors={[]} // Replace with actual data
       />
       
       <AlternativeProducts 
