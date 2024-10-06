@@ -3,7 +3,7 @@
 import React, { useState, ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Truck, HelpCircle } from 'lucide-react';
+import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Truck, HelpCircle, User } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -42,6 +42,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link href="/dashboard" className={mainCategoryStyle('/dashboard')} onClick={() => setOpenSection(null)}>
               <BarChart className="w-5 h-5" />
               <span>Dashboard</span>
+            </Link>
+            <Link href="/consumer" className={mainCategoryStyle('/consumer')} onClick={() => setOpenSection(null)}>
+              <User className="w-5 h-5" />
+              <span>Consumer</span>
             </Link>
             <div>
               <Link
