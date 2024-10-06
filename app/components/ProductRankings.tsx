@@ -1,29 +1,54 @@
+// components/ProductRankings.tsx
+
+'use client';
+
 import React, { useCallback, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Line } from 'react-chartjs-2';
-import { Select } from "@/components/ui/select";
+import { Select, Option } from "@/components/ui/select";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title as ChartTitle,
+  Tooltip,
+  Legend
+} from 'chart.js';
 
-// Define more specific types for better type safety
-type Ranking = {
-  date: string; // Assuming date is a string, could also use Date type if applicable
+// Register necessary Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ChartTitle,
+  Tooltip,
+  Legend
+);
+
+// Define specific types for better type safety
+interface Ranking {
+  date: string; // e.g., '2023-01-01'
   rank: number;
-};
+}
 
-type Competitor = {
+interface Competitor {
   name: string;
   rank: number;
-};
+}
 
-type Props = {
+interface ProductRankingsProps {
   product: string;
   market: string;
   indication: string;
   rankings: Ranking[];
   competitors: Competitor[];
-};
+}
 
-const ProductRankings: React.FC<Props> = ({ product, market, indication, rankings, competitors }) => {
-  const [timeScale, setTimeScale] = useState('1M');
+const ProductRankings: React.FC<ProductRankingsProps> = ({ product, market, indication, rankings, competitors }) => {
+  const [timeScale, setTimeScale] = useState<string>('1M');
 
   // Callback to generate analysis text based on current ranking data
   const generateMainChartAnalysis = useCallback(() => {
@@ -37,11 +62,11 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
       ? competitors.reduce((prev, current) => (current.rank < prev.rank) ? current : prev)
       : null;
 
-    return `${product} ${rankChange > 0 ? 'improved' : 'dropped'} from rank ${startRank} to ${currentRank} for ${indication} in ${market}.
-    
-    ${topCompetitor ? `Top performer: ${topCompetitor.name} (rank ${topCompetitor.rank})` : 'No competitor data available.'}
-    
-    Key factors influencing this trend may include recent product improvements, marketing efforts, or shifts in consumer preferences.`;
+    return `${product} has ${rankChange > 0 ? 'improved' : 'dropped'} from rank ${startRank} to rank ${currentRank} for ${indication} in the ${market} market.
+
+${topCompetitor ? `Top competitor: ${topCompetitor.name} (Rank ${topCompetitor.rank})` : 'No competitor data available.'}
+
+Key factors influencing this trend may include recent product improvements, marketing efforts, or shifts in consumer preferences.`;
   }, [rankings, competitors, product, market, indication]);
 
   // Memoized chart data to avoid unnecessary recalculations
@@ -56,7 +81,8 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
           label: 'Rank',
           data: rankings.map(r => r.rank),
           borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
+          tension: 0.1,
+          fill: false,
         }
       ]
     };
@@ -84,12 +110,14 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
         </div>
         
         {rankings && rankings.length > 0 ? (
-          <Line data={mainChartData} options={{ responsive: true, maintainAspectRatio: false }} className="mb-6" />
+          <div className="h-64">
+            <Line data={mainChartData} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { reverse: true, beginAtZero: false, ticks: { stepSize: 1 } } } }} />
+          </div>
         ) : (
           <p>No ranking data available.</p>
         )}
         
-        <p className="mb-6">{generateMainChartAnalysis()}</p>
+        <p className="mt-6">{generateMainChartAnalysis()}</p>
       </CardContent>
     </Card>
   );

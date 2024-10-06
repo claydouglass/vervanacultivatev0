@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 type Suggestion = {
@@ -42,11 +42,11 @@ const mockProductData: ProductData[] = [
           ],
         },
       },
-      // Add more batches here
+      // Add more batches here if needed
     ],
     geographies: ['UK', 'DE', 'AU', 'CH', 'CA'],
   },
-  // Add more products here
+  // Add more products here if needed
 ];
 
 export default function Recommendations() {
@@ -55,8 +55,8 @@ export default function Recommendations() {
   const [selectedGeography, setSelectedGeography] = useState<string>(mockProductData[0].geographies[0]);
   const [showComparison, setShowComparison] = useState(false);
 
-  const currentProduct = mockProductData.find(p => p.id === selectedProduct);
-  const currentBatch = currentProduct?.batches.find(b => b.id === selectedBatch);
+  const currentProduct = mockProductData.find((p) => p.id === selectedProduct);
+  const currentBatch = currentProduct?.batches.find((b) => b.id === selectedBatch);
 
   return (
     <Card>
@@ -65,50 +65,71 @@ export default function Recommendations() {
       </CardHeader>
       <CardContent>
         <div className="flex space-x-4 mb-4">
-          <Select onValueChange={setSelectedProduct} value={selectedProduct}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select product" />
-            </SelectTrigger>
-            <SelectContent>
-              {mockProductData.map(product => (
-                <SelectItem key={product.id} value={product.id}>{product.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select onValueChange={setSelectedBatch} value={selectedBatch}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select batch" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentProduct?.batches.map(batch => (
-                <SelectItem key={batch.id} value={batch.id}>{batch.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select onValueChange={setSelectedGeography} value={selectedGeography}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select geography" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentProduct?.geographies.map(geo => (
-                <SelectItem key={geo} value={geo}>{geo}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {/* Product Select */}
+          <Select
+            options={mockProductData.map((product) => ({
+              label: product.name,
+              value: product.id,
+            }))}
+            defaultValue={selectedProduct}
+            onValueChange={(value) => {
+              setSelectedProduct(value);
+              // Update batch and geography when product changes
+              const newProduct = mockProductData.find((p) => p.id === value);
+              if (newProduct) {
+                setSelectedBatch(newProduct.batches[0]?.id || '');
+                setSelectedGeography(newProduct.geographies[0] || '');
+              }
+            }}
+            placeholder="Select product"
+          />
+
+          {/* Batch Select */}
+          <Select
+            options={
+              currentProduct?.batches.map((batch) => ({
+                label: batch.name,
+                value: batch.id,
+              })) || []
+            }
+            defaultValue={selectedBatch}
+            onValueChange={setSelectedBatch}
+            placeholder="Select batch"
+          />
+
+          {/* Geography Select */}
+          <Select
+            options={
+              currentProduct?.geographies.map((geo) => ({
+                label: geo,
+                value: geo,
+              })) || []
+            }
+            defaultValue={selectedGeography}
+            onValueChange={setSelectedGeography}
+            placeholder="Select geography"
+          />
+
+          {/* Comparison Button */}
           <Button onClick={() => setShowComparison(!showComparison)}>
             {showComparison ? 'Hide Comparison' : 'Show Comparison'}
           </Button>
         </div>
 
+        {/* Suggestions Display */}
         {currentBatch && (
           <div className="mb-8 p-6 border rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">Product: {currentProduct?.name} (Current Batch: {currentBatch.name})</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              Product: {currentProduct?.name} (Current Batch: {currentBatch.name})
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="text-lg font-medium mb-2">Cultivation Suggestions:</h4>
                 <ul className="list-disc pl-5 mb-4">
                   {currentBatch.suggestions.cultivationSuggestions.map((s, index) => (
-                    <li key={index} className="mb-1">{s}</li>
+                    <li key={index} className="mb-1">
+                      {s}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -116,7 +137,9 @@ export default function Recommendations() {
                 <h4 className="text-lg font-medium mb-2">Processing Suggestions:</h4>
                 <ul className="list-disc pl-5 mb-4">
                   {currentBatch.suggestions.processingSuggestions.map((s, index) => (
-                    <li key={index} className="mb-1">{s}</li>
+                    <li key={index} className="mb-1">
+                      {s}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -124,6 +147,7 @@ export default function Recommendations() {
           </div>
         )}
 
+        {/* Comparison Display */}
         {showComparison && (
           <div className="mb-8 p-6 border rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold mb-2">Comparison</h3>
