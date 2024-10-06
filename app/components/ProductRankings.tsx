@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Line } from 'react-chartjs-2';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select as SelectPrimitive, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -122,7 +122,7 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
     },
   };
 
-  const goalEvolutionData = {
+  const goalEvolutionData = useMemo(() => ({
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: goals.map((goal, index) => ({
       label: goal,
@@ -132,7 +132,7 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
       tension: 0.1,
       hidden: hoveredDataset ? goal !== hoveredDataset : false,
     })),
-  };
+  }), [goals, generateColor, hoveredDataset]);
 
   const goalEvolutionOptions = {
     responsive: true,
@@ -198,7 +198,7 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
       </CardHeader>
       <CardContent>
         <div className="flex space-x-4 mb-6">
-          <Select onValueChange={setTimeScale} value={timeScale}>
+          <SelectPrimitive onValueChange={setTimeScale} value={timeScale}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select Time Period" />
             </SelectTrigger>
@@ -207,8 +207,8 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
                 <SelectItem key={scale} value={scale}>{scale}</SelectItem>
               ))}
             </SelectContent>
-          </Select>
-          <Select onValueChange={setSelectedGoal} value={selectedGoal}>
+          </SelectPrimitive>
+          <SelectPrimitive onValueChange={setSelectedGoal} value={selectedGoal}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select Consumer Goal" />
             </SelectTrigger>
@@ -217,7 +217,7 @@ const ProductRankings: React.FC<Props> = ({ product, market, indication, ranking
                 <SelectItem key={goal} value={goal}>{goal}</SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </SelectPrimitive>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

@@ -4,6 +4,7 @@ import React, { useState, ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Truck, HelpCircle, User } from 'lucide-react';
+import Image from 'next/image';
 
 interface LayoutProps {
   children: ReactNode;
@@ -36,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <aside className="w-64 bg-white shadow-md flex flex-col justify-between">
         <div className="p-4">
           <div className="flex justify-start mb-8">
-            <img src="/favicon.ico" alt="Vervana Logo" className="w-8 h-8" />
+            <Image src="/favicon.ico" alt="Vervana Logo" width={32} height={32} />
           </div>
           <nav className="space-y-4">
             <Link href="/dashboard" className={mainCategoryStyle('/dashboard')} onClick={() => setOpenSection(null)}>
