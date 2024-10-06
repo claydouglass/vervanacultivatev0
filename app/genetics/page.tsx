@@ -166,7 +166,7 @@ export default function GeneticsPage() {
                   <li>Explore cultivation techniques to enhance terpene production, particularly {Object.keys(currentGenetic.terpenes)[0]} and {Object.keys(currentGenetic.terpenes)[1]}</li>
                   <li>Investigate ways to reduce labor hours without compromising quality</li>
                   <li>Consider crossbreeding to enhance {currentGenetic.thc > currentGenetic.cbd ? 'CBD' : 'THC'} content</li>
-                  <li>Analyze market demand for this strain's terpene profile and adjust production accordingly</li>
+                  <li>Analyze market demand for this strain&apos;s terpene profile and adjust production accordingly</li>
                   <li>Focus on reducing production costs, aiming to consistently achieve the lower end of the cost range</li>
                 </ul>
               </CardContent>
