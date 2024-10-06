@@ -209,7 +209,7 @@ export default function GeneticsPage() {
                     {currentGenetic.thc > currentGenetic.cbd ? 'CBD' : 'THC'} content
                   </li>
                   <li>
-                    Analyze market demand for this strain's terpene profile and adjust production
+                    Analyze market demand for this strain&apos;s terpene profile and adjust production
                     accordingly
                   </li>
                   <li>
