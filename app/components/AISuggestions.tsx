@@ -43,7 +43,6 @@ const mockProductData: ProductData[] = [
           ],
         },
       },
-      // Add more batches here
     ],
   },
   // Add more products here

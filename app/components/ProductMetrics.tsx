@@ -2,12 +2,33 @@
 
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 type SocialMetrics = {
   likes: number;
   comments: number;
   views: number;
+  shares: number;
   rating: number;
+  wishlist: number;
 };
 
 type Geography = {
@@ -53,23 +74,49 @@ export default function ProductMetrics() {
             batchNumber: 'KT-2023-05-A',
             harvestDate: '2023-05-10',
             room: 'Room 101',
-            socialMetrics: { likes: 3000, comments: 550, views: 12000, rating: 4.7 },
+            socialMetrics: { likes: 3000, comments: 550, views: 12000, shares: 800, rating: 4.7, wishlist: 450 },
           },
           cultivationDecisions: ['LED lighting', 'Coco coir medium', 'High-stress training'],
           processingDecisions: ['Slow dry for 16 days', 'Hand-trimmed', '5-week cure'],
           logisticsDecisions: ['Glass jar packaging', 'Refrigerated transport'],
           geographies: [
-            { country: 'UK', socialMetrics: { likes: 1200, comments: 220, views: 5000, rating: 4.8 } },
-            { country: 'DE', socialMetrics: { likes: 900, comments: 170, views: 3500, rating: 4.6 } },
-            { country: 'AU', socialMetrics: { likes: 700, comments: 120, views: 2500, rating: 4.7 } },
-            { country: 'CH', socialMetrics: { likes: 500, comments: 90, views: 1800, rating: 4.5 } },
-            { country: 'CA', socialMetrics: { likes: 1000, comments: 200, views: 4000, rating: 4.8 } },
+            { country: 'UK', socialMetrics: { likes: 1200, comments: 220, views: 5000, shares: 300, rating: 4.8, wishlist: 180 } },
+            { country: 'DE', socialMetrics: { likes: 900, comments: 170, views: 3500, shares: 250, rating: 4.6, wishlist: 140 } },
+            { country: 'AU', socialMetrics: { likes: 700, comments: 120, views: 2500, shares: 200, rating: 4.7, wishlist: 110 } },
+            { country: 'CH', socialMetrics: { likes: 500, comments: 90, views: 1800, shares: 150, rating: 4.5, wishlist: 80 } },
+            { country: 'CA', socialMetrics: { likes: 1000, comments: 200, views: 4000, shares: 280, rating: 4.8, wishlist: 160 } },
           ],
         },
-        // ... (add similar data for Papaya Terpz and Mint Terpz)
+        // ... (add similar data for other products)
       ]);
     }, 1000);
   }, []);
+
+  const batchData = {
+    labels: ['KT-2023-05-A', 'BD-2023-06-B', 'GSC-2023-07-C', 'AK-2023-08-D'],
+    datasets: [
+      {
+        label: 'Likes',
+        data: [3000, 2500, 3500, 2800],
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      },
+      {
+        label: 'Comments',
+        data: [550, 480, 620, 530],
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+      },
+      {
+        label: 'Views',
+        data: [12000, 10000, 13000, 11000],
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+      },
+      {
+        label: 'Wishlist',
+        data: [450, 400, 500, 420],
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+      },
+    ],
+  };
 
   return (
     <div className="space-y-8">
@@ -105,7 +152,7 @@ export default function ProductMetrics() {
             </div>
             <div className="mt-6">
               <h3 className="text-lg font-semibold mb-2">Social Engagement</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <div className="text-center p-2 bg-blue-100 rounded">
                   <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.likes}</p>
                   <p className="text-sm">Likes</p>
@@ -119,8 +166,16 @@ export default function ProductMetrics() {
                   <p className="text-sm">Views</p>
                 </div>
                 <div className="text-center p-2 bg-purple-100 rounded">
+                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.shares}</p>
+                  <p className="text-sm">Shares</p>
+                </div>
+                <div className="text-center p-2 bg-pink-100 rounded">
                   <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.rating}</p>
                   <p className="text-sm">Rating</p>
+                </div>
+                <div className="text-center p-2 bg-indigo-100 rounded">
+                  <p className="text-2xl font-bold">{product.currentBatch.socialMetrics.wishlist}</p>
+                  <p className="text-sm">Wishlist</p>
                 </div>
               </div>
             </div>
@@ -142,7 +197,9 @@ export default function ProductMetrics() {
                       <th className="text-right p-2">Likes</th>
                       <th className="text-right p-2">Comments</th>
                       <th className="text-right p-2">Views</th>
+                      <th className="text-right p-2">Shares</th>
                       <th className="text-right p-2">Rating</th>
+                      <th className="text-right p-2">Wishlist</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -152,12 +209,18 @@ export default function ProductMetrics() {
                         <td className="text-right p-2">{geo.socialMetrics.likes}</td>
                         <td className="text-right p-2">{geo.socialMetrics.comments}</td>
                         <td className="text-right p-2">{geo.socialMetrics.views}</td>
+                        <td className="text-right p-2">{geo.socialMetrics.shares}</td>
                         <td className="text-right p-2">{geo.socialMetrics.rating}</td>
+                        <td className="text-right p-2">{geo.socialMetrics.wishlist}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+            </div>
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold mb-4">Social Engagement by Batch</h3>
+              <Bar data={batchData} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} />
             </div>
           </CardContent>
         </Card>
