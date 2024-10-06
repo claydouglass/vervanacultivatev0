@@ -3,7 +3,7 @@
 import React, { useState, ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Truck, HelpCircle, User } from 'lucide-react';
+import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Truck, HelpCircle, User, Dna } from 'lucide-react';
 import Image from 'next/image';
 
 interface LayoutProps {
@@ -48,6 +48,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <User className="w-5 h-5" />
               <span>Consumer</span>
             </Link>
+            <div>
+              <Link
+                href="/genetics"
+                className={mainCategoryStyle('/genetics')}
+                onClick={() => setOpenSection(openSection === 'genetics' ? null : 'genetics')}
+              >
+                <Dna className="w-5 h-5" />
+                <span>Genetics</span>
+              </Link>
+              {openSection === 'genetics' && (
+                <div className="mt-2 space-y-2">
+                  <Link href="/genetics/performance" className={subCategoryStyle('/genetics/performance')}>Performance</Link>
+                  <Link href="/genetics/analysis" className={subCategoryStyle('/genetics/analysis')}>Analysis</Link>
+                  <Link href="/genetics/suggestions" className={subCategoryStyle('/genetics/suggestions')}>Suggestions</Link>
+                </div>
+              )}
+            </div>
             <div>
               <Link
                 href="/cultivation"
