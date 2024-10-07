@@ -1,9 +1,7 @@
-// app/consumer/page.tsx
-
 'use client';
 
 import React, { useState } from 'react';
-import { Select, Option } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import ProductMetrics from "../components/ProductMetrics";
 import PerformanceCharts from "../components/PerformanceCharts";
 import ProductRankings from "../components/ProductRankings";
@@ -41,9 +39,10 @@ export default function ConsumerPage() {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Consumer Insights</h1>
+      <h1 className="text-3xl font-bold mb-6">Consumer</h1>
 
-      <div className="flex flex-wrap space-x-4 space-y-4 mb-6">
+      {/* Flex Container for Dropdowns */}
+      <div className="flex items-center space-x-4 mb-6"> {/* Use items-center for vertical alignment */}
         <Select
           options={products.map((product) => ({
             label: product,
@@ -52,6 +51,7 @@ export default function ConsumerPage() {
           defaultValue={selectedProduct}
           onValueChange={setSelectedProduct}
           placeholder="Select Product"
+          className="h-10" /* Set consistent height for alignment */
         />
         <Select
           options={batches.map((batch) => ({
@@ -61,6 +61,7 @@ export default function ConsumerPage() {
           defaultValue={selectedBatch}
           onValueChange={setSelectedBatch}
           placeholder="Select Batch"
+          className="h-10" /* Set consistent height */
         />
         <Select
           options={markets.map((market) => ({
@@ -70,6 +71,7 @@ export default function ConsumerPage() {
           defaultValue={selectedMarket}
           onValueChange={setSelectedMarket}
           placeholder="Select Market"
+          className="h-10" /* Set consistent height */
         />
         <Select
           options={goals.map((goal) => ({
@@ -79,6 +81,7 @@ export default function ConsumerPage() {
           defaultValue={selectedGoal}
           onValueChange={setSelectedGoal}
           placeholder="Select Goal"
+          className="h-10" /* Set consistent height */
         />
       </div>
 
