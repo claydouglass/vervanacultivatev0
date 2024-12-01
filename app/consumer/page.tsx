@@ -43,16 +43,17 @@ export default function ConsumerPage() {
 
       {/* Flex Container for Dropdowns */}
       <div className="flex items-center space-x-4 mb-6"> {/* Use items-center for vertical alignment */}
-        <Select
-          options={products.map((product) => ({
-            label: product,
-            value: product,
-          }))}
-          defaultValue={selectedProduct}
-          onValueChange={setSelectedProduct}
-          placeholder="Select Product"
-          className="h-10" /* Set consistent height for alignment */
-        />
+        <div className="h-10">
+          <Select
+            options={products.map((product) => ({
+              label: product,
+              value: product,
+            }))}
+            defaultValue={selectedProduct}
+            onValueChange={setSelectedProduct}
+            placeholder="Select Product"
+          />
+        </div>
         <Select
           options={batches.map((batch) => ({
             label: batch,
