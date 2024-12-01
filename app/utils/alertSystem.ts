@@ -1,6 +1,6 @@
-import { staffData } from '../staff/page';
 import twilio from 'twilio';
-import sgMail from '@sendgrid/mail';
+import { staffData } from '../staff/page';
+import { sendSMS } from './notifications';
 
 // Define environmental threshold constants
 const THRESHOLDS = {
@@ -29,33 +29,6 @@ interface EnvironmentalReading {
 }
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-async function sendSMS(phone: string, message: string) {
-  try {
-    await client.messages.create({
-      body: message,
-      to: phone,
-      from: process.env.TWILIO_PHONE_NUMBER,
-    });
-  } catch (error) {
-    console.error('SMS sending failed:', error);
-  }
-}
-
-async function sendEmail(email: string, subject: string, message: string) {
-  try {
-    await sgMail.send({
-      to: email,
-      from: 'your-verified-sender@example.com',
-      subject,
-      text: message,
-    });
-  } catch (error) {
-    console.error('Email sending failed:', error);
-  }
-}
 
 export async function checkEnvironmentalExcursion(reading: EnvironmentalReading) {
   // Check temperature
@@ -99,9 +72,7 @@ async function checkHumidity(reading: EnvironmentalReading) {
 async function sendAlerts(reading: EnvironmentalReading, level: AlertLevel, type: AlertType) {
   const parameter = type === 'TEMPERATURE' ? `${reading.temperature}°C` : `${reading.humidity}%RH`;
   const message = `${type} ${level} at ${reading.location}: ${parameter} at ${reading.timestamp.toLocaleString()}`;
-  const subject = `${type} ${level} Alert`;
-
-  // Filter staff based on alert level
+  
   const recipientsToNotify = staffData.filter(staff => 
     staff.alertPreference === 'ALL' || 
     (staff.alertPreference === 'CRITICAL_ONLY' && level === 'CRITICAL')
@@ -109,6 +80,5 @@ async function sendAlerts(reading: EnvironmentalReading, level: AlertLevel, type
 
   for (const staff of recipientsToNotify) {
     await sendSMS(staff.phone, message);
-    await sendEmail(staff.email, subject, message);
   }
 } 

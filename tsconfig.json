@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -9,8 +8,9 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -21,12 +21,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["src/components/*"],
-      "@/lib/*": ["lib/*"]
+      "@/*": ["./*"]
     },
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "scripts/seed-shipments.ts"],
   "exclude": ["node_modules"]
 }
