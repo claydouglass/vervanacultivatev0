@@ -42,7 +42,7 @@ export default function ConsumerPage() {
       <h1 className="text-3xl font-bold mb-6">Consumer</h1>
 
       {/* Flex Container for Dropdowns */}
-      <div className="flex items-center space-x-4 mb-6"> {/* Use items-center for vertical alignment */}
+      <div className="flex items-center space-x-4 mb-6">
         <div className="h-10">
           <Select
             options={products.map((product) => ({
@@ -54,36 +54,39 @@ export default function ConsumerPage() {
             placeholder="Select Product"
           />
         </div>
-        <Select
-          options={batches.map((batch) => ({
-            label: batch,
-            value: batch,
-          }))}
-          defaultValue={selectedBatch}
-          onValueChange={setSelectedBatch}
-          placeholder="Select Batch"
-          className="h-10" /* Set consistent height */
-        />
-        <Select
-          options={markets.map((market) => ({
-            label: market,
-            value: market,
-          }))}
-          defaultValue={selectedMarket}
-          onValueChange={setSelectedMarket}
-          placeholder="Select Market"
-          className="h-10" /* Set consistent height */
-        />
-        <Select
-          options={goals.map((goal) => ({
-            label: goal,
-            value: goal,
-          }))}
-          defaultValue={selectedGoal}
-          onValueChange={setSelectedGoal}
-          placeholder="Select Goal"
-          className="h-10" /* Set consistent height */
-        />
+        <div className="h-10">
+          <Select
+            options={batches.map((batch) => ({
+              label: batch,
+              value: batch,
+            }))}
+            defaultValue={selectedBatch}
+            onValueChange={setSelectedBatch}
+            placeholder="Select Batch"
+          />
+        </div>
+        <div className="h-10">
+          <Select
+            options={markets.map((market) => ({
+              label: market,
+              value: market,
+            }))}
+            defaultValue={selectedMarket}
+            onValueChange={setSelectedMarket}
+            placeholder="Select Market"
+          />
+        </div>
+        <div className="h-10">
+          <Select
+            options={goals.map((goal) => ({
+              label: goal,
+              value: goal,
+            }))}
+            defaultValue={selectedGoal}
+            onValueChange={setSelectedGoal}
+            placeholder="Select Goal"
+          />
+        </div>
       </div>
 
       <div className="mb-8">
