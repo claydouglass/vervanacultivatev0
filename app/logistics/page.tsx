@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Select } from "@/components/ui/select";
-import BatchAvailability from '../components/BatchAvailability';
-import ExportLicenses from '../components/ExportLicenses';
-import ShippingRoutes from '../components/ShippingRoutes';
-import LiveTracker from '../components/LiveTracker';
-import ElproTracker from '../components/ElproTracker';
-import ElproTest from '../components/ElproTest';
-import ShipmentTrackingMap from '../components/ShipmentTrackingMap';
+import { Select } from "../../components/ui/select.js";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs.js";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card.js";
+import BatchAvailability from '../components/BatchAvailability.jsx';
+import ExportLicenses from '../components/ExportLicenses.jsx';
+import ShippingRoutes from '../components/ShippingRoutes.jsx';
+import LiveTracker from '../components/LiveTracker.jsx';
+import ElproTracker from '../components/ElproTracker.jsx';
+import ElproTest from '../components/ElproTest.jsx';
+import ShipmentTrackingMap from '../components/ShipmentTrackingMap.jsx';
 
 const products = ['Kandy Terpz', 'Papaya Terpz', 'Mint Terpz'];
 const batches = ['KT-2023-05-A', 'PT-2023-06-B', 'MT-2023-07-A'];
