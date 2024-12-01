@@ -23,64 +23,9 @@ const LogisticsPage: React.FC = () => {
   const [selectedBuyer, setSelectedBuyer] = useState(buyers[0]);
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Logistics Dashboard</h1>
-      
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        <Select
-          options={products.map(product => ({ label: product, value: product }))}
-          defaultValue={selectedProduct}
-          onValueChange={setSelectedProduct}
-          placeholder="Product"
-        />
-
-        <Select
-          options={batches.map(batch => ({ label: batch, value: batch }))}
-          defaultValue={selectedBatch}
-          onValueChange={setSelectedBatch}
-          placeholder="Batch"
-        />
-
-        <Select
-          options={locations.map(location => ({ label: location, value: location }))}
-          defaultValue={selectedLocation}
-          onValueChange={setSelectedLocation}
-          placeholder="Location"
-        />
-
-        <Select
-          options={shippingPartners.map(partner => ({ label: partner, value: partner }))}
-          defaultValue={selectedShippingPartner}
-          onValueChange={setSelectedShippingPartner}
-          placeholder="Shipping Partner"
-        />
-
-        <Select
-          options={buyers.map(buyer => ({ label: buyer, value: buyer }))}
-          defaultValue={selectedBuyer}
-          onValueChange={setSelectedBuyer}
-          placeholder="Buyer"
-        />
-      </div>
-
-      <div className="space-y-6">
-        <BatchAvailability product={selectedProduct} batch={selectedBatch} />
-        <ElproTracker 
-          product={selectedProduct} 
-          batch={selectedBatch} 
-          location={selectedLocation}
-        />
-        <ExportLicenses product={selectedProduct} batch={selectedBatch} location={selectedLocation} />
-        <ShippingRoutes 
-          product={selectedProduct} 
-          batch={selectedBatch} 
-          location={selectedLocation}
-          shippingPartner={selectedShippingPartner}
-          buyer={selectedBuyer}
-        />
-        <LiveTracker product={selectedProduct} batch={selectedBatch} shippingPartner={selectedShippingPartner} />
-        <ElproTest />
-      </div>
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Logistics Tracking</h1>
+      <ElproTracker batch="KT-2023-05-A" />
     </div>
   );
 };
