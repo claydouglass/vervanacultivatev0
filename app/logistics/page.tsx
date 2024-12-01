@@ -6,6 +6,8 @@ import BatchAvailability from '../components/BatchAvailability';
 import ExportLicenses from '../components/ExportLicenses';
 import ShippingRoutes from '../components/ShippingRoutes';
 import LiveTracker from '../components/LiveTracker';
+import ElproTracker from '../components/ElproTracker';
+import ElproTest from '../components/ElproTest';
 
 const products = ['Kandy Terpz', 'Papaya Terpz', 'Mint Terpz'];
 const batches = ['KT-2023-05-A', 'PT-2023-06-B', 'MT-2023-07-A'];
@@ -61,16 +63,24 @@ const LogisticsPage: React.FC = () => {
         />
       </div>
 
-      <BatchAvailability product={selectedProduct} batch={selectedBatch} />
-      <ExportLicenses product={selectedProduct} batch={selectedBatch} location={selectedLocation} />
-      <ShippingRoutes 
-        product={selectedProduct} 
-        batch={selectedBatch} 
-        location={selectedLocation}
-        shippingPartner={selectedShippingPartner}
-        buyer={selectedBuyer}
-      />
-      <LiveTracker product={selectedProduct} batch={selectedBatch} shippingPartner={selectedShippingPartner} />
+      <div className="space-y-6">
+        <BatchAvailability product={selectedProduct} batch={selectedBatch} />
+        <ElproTracker 
+          product={selectedProduct} 
+          batch={selectedBatch} 
+          location={selectedLocation}
+        />
+        <ExportLicenses product={selectedProduct} batch={selectedBatch} location={selectedLocation} />
+        <ShippingRoutes 
+          product={selectedProduct} 
+          batch={selectedBatch} 
+          location={selectedLocation}
+          shippingPartner={selectedShippingPartner}
+          buyer={selectedBuyer}
+        />
+        <LiveTracker product={selectedProduct} batch={selectedBatch} shippingPartner={selectedShippingPartner} />
+        <ElproTest />
+      </div>
     </div>
   );
 };
