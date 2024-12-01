@@ -3,14 +3,14 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "../../components/ui/scroll-area.js";
 import { Button } from "@/components/ui/button";
 import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Calendar } from "lucide-react";
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "../../components/ui/progress.js";
 import Image from 'next/image';
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "../../components/ui/checkbox.js";
 
 // Headline Metrics Data
 const headlineMetrics = {
