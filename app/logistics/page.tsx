@@ -1,61 +1,161 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Select } from "../../components/ui/select.js";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs.js";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card.js";
-import BatchAvailability from '../components/BatchAvailability.jsx';
-import ExportLicenses from '../components/ExportLicenses.jsx';
-import ShippingRoutes from '../components/ShippingRoutes.jsx';
-import LiveTracker from '../components/LiveTracker.jsx';
-import ElproTracker from '../components/ElproTracker.jsx';
-import ElproTest from '../components/ElproTest.jsx';
-import ShipmentTrackingMap from '../components/ShipmentTrackingMap.jsx';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RoutePlanner } from '../components/logistics/RoutePlanner';
+import { LiveTracker } from '../components/logistics/LiveTracker';
+import { ShipmentsTable } from '../components/logistics/ShipmentsTable';
+import { ManualDataEntry } from '../components/logistics/ManualDataEntry';
+import { RouteComparison } from '../components/logistics/RouteComparison';
+import { checkEnvironmentalExcursion } from "@/app/utils/alertSystem";
+import { ShipmentLocation, EnvironmentalReading, RoutePoint, ShipmentStatus, Shipment } from '@/types/shipment';
 
-const products = ['Kandy Terpz', 'Papaya Terpz', 'Mint Terpz'];
-const batches = ['KT-2023-05-A', 'PT-2023-06-B', 'MT-2023-07-A'];
-const locations = ['UK', 'Germany', 'Australia', 'Switzerland', 'Canada'];
-const shippingPartners = ['Rhenus', 'Bolore', 'DHL', 'UPS', 'Local Courier'];
-const buyers = ['Dispensary A', 'Wholesaler B', 'Distributor C'];
+export default function LogisticsPage() {
+  const [isRouteDialogOpen, setIsRouteDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('active');
+  const [selectedShipment, setSelectedShipment] = useState<string | null>(null);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [shipmentStatuses, setShipmentStatuses] = useState<Record<string, ShipmentStatus>>({});
 
-const LogisticsPage: React.FC = () => {
-  const [selectedProduct, setSelectedProduct] = useState(products[0]);
-  const [selectedBatch, setSelectedBatch] = useState(batches[0]);
-  const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  const [selectedShippingPartner, setSelectedShippingPartner] = useState(shippingPartners[0]);
-  const [selectedBuyer, setSelectedBuyer] = useState(buyers[0]);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (selectedShipment) {
+        await refreshShipmentStatus(selectedShipment);
+      }
+    }, 30000);
 
-  // Example data - replace with your API call
-  const sampleLocations = [
-    {
-      id: '1',
-      location: { lat: 40.7128, lng: -74.0060 },
-      arrivalTime: new Date('2024-03-20T10:00:00'),
-      departureTime: new Date('2024-03-20T14:30:00'),
-      shipmentId: 'SHIP001'
-    },
-    {
-      id: '2',
-      location: { lat: 51.5074, lng: -0.1278 },
-      arrivalTime: new Date('2024-03-21T08:00:00'),
-      departureTime: null, // Currently here
-      shipmentId: 'SHIP001'
+    return () => clearInterval(interval);
+  }, [selectedShipment]);
+
+  const refreshShipmentStatus = async (shipmentId: string) => {
+    try {
+      const response = await fetch(`/api/shipments/${shipmentId}/status`);
+      const status = await response.json();
+      setShipmentStatuses(prev => ({
+        ...prev,
+        [shipmentId]: status
+      }));
+
+      if (status.environmentalConditions?.lastReading) {
+        await checkEnvironmentalExcursion(status.environmentalConditions.lastReading);
+      }
+    } catch (error) {
+      console.error('Error refreshing shipment status:', error);
     }
-  ];
+  };
+
+  const handleSaveRoute = async (route: RoutePoint[]) => {
+    try {
+      const response = await fetch('/api/shipments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ route }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create shipment');
+      }
+
+      const newShipment = await response.json();
+      setShipments([...shipments, newShipment]);
+      setSelectedShipment(newShipment.id);
+    } catch (error) {
+      console.error('Error creating shipment:', error);
+    }
+  };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Logistics Dashboard</h1>
-      
-      {/* Tracking Section */}
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Active Shipments</h2>
-        <ShipmentTrackingMap shipmentLocations={sampleLocations} />
-      </section>
+    <div className="container mx-auto p-4 space-y-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Logistics Dashboard</h1>
+        <Button 
+          onClick={() => window.location.href = '/route-planning'}
+          className="bg-green-600 hover:bg-green-700 text-white"
+        >
+          Plan New Route
+        </Button>
+      </div>
 
-      {/* Other logistics sections can go here */}
+      <div className="flex justify-between items-center">
+        <div className="flex gap-2">
+          {selectedShipment && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Update Data</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Manual Data Entry</DialogTitle>
+                </DialogHeader>
+                <ManualDataEntry
+                  onLocationUpdate={handleLocationUpdate}
+                  onEnvironmentalUpdate={handleEnvironmentalUpdate}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="active">Active Shipments</TabsTrigger>
+          <TabsTrigger value="completed">Completed Shipments</TabsTrigger>
+        </TabsList>
+        <TabsContent value="active">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Active Shipments</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ShipmentsTable
+                  shipments={shipments.filter(s => s.status !== 'completed')}
+                  onSelectShipment={setSelectedShipment}
+                  selectedShipmentId={selectedShipment}
+                />
+              </CardContent>
+            </Card>
+            {selectedShipment && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Live Tracking</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <LiveTracker shipmentId={selectedShipment} />
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </TabsContent>
+        <TabsContent value="completed">
+          <Card>
+            <CardHeader>
+              <CardTitle>Completed Shipments</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ShipmentsTable
+                shipments={shipments.filter(s => s.status === 'completed')}
+                onSelectShipment={setSelectedShipment}
+                selectedShipmentId={selectedShipment}
+              />
+            </CardContent>
+          </Card>
+          <Card className="mt-4">
+            <CardHeader>
+              <CardTitle>Route Comparison</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RouteComparison shipments={shipments.filter(s => s.status === 'completed')} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
-};
-
-export default LogisticsPage;
+}

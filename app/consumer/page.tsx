@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Select } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ProductMetrics from "../components/ProductMetrics";
 import PerformanceCharts from "../components/PerformanceCharts";
 import ProductRankings from "../components/ProductRankings";
@@ -44,48 +44,72 @@ export default function ConsumerPage() {
       {/* Flex Container for Dropdowns */}
       <div className="flex items-center space-x-4 mb-6">
         <div className="h-10">
-          <Select
-            options={products.map((product) => ({
-              label: product,
-              value: product,
-            }))}
-            defaultValue={selectedProduct}
-            onValueChange={setSelectedProduct}
-            placeholder="Select Product"
-          />
+          <Select onValueChange={setSelectedProduct}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Product" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Products</SelectLabel>
+                {products.map((product) => (
+                  <SelectItem key={product} value={product}>
+                    {product}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="h-10">
-          <Select
-            options={batches.map((batch) => ({
-              label: batch,
-              value: batch,
-            }))}
-            defaultValue={selectedBatch}
-            onValueChange={setSelectedBatch}
-            placeholder="Select Batch"
-          />
+          <Select onValueChange={setSelectedBatch}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Batch" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Batches</SelectLabel>
+                {batches.map((batch) => (
+                  <SelectItem key={batch} value={batch}>
+                    {batch}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="h-10">
-          <Select
-            options={markets.map((market) => ({
-              label: market,
-              value: market,
-            }))}
-            defaultValue={selectedMarket}
-            onValueChange={setSelectedMarket}
-            placeholder="Select Market"
-          />
+          <Select onValueChange={setSelectedMarket}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Market" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Markets</SelectLabel>
+                {markets.map((market) => (
+                  <SelectItem key={market} value={market}>
+                    {market}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="h-10">
-          <Select
-            options={goals.map((goal) => ({
-              label: goal,
-              value: goal,
-            }))}
-            defaultValue={selectedGoal}
-            onValueChange={setSelectedGoal}
-            placeholder="Select Goal"
-          />
+          <Select onValueChange={setSelectedGoal}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Goal" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Goals</SelectLabel>
+                {goals.map((goal) => (
+                  <SelectItem key={goal} value={goal}>
+                    {goal}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

@@ -1,4 +1,7 @@
 // Overview of all shipments
+import { ShipmentsTable } from '@/app/components/logistics/ShipmentsTable';
+import Link from 'next/link';
+
 const ShipmentsPage = () => {
   return (
     <div>

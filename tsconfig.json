@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ESNext",
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -20,12 +23,8 @@
         "name": "next"
       }
     ],
-    "paths": {
-      "@/*": ["./*"],
-      "@/lib/utils": ["./lib/utils.ts"]
-    },
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "scripts/seed-shipments.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

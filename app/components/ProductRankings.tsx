@@ -5,7 +5,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Line } from 'react-chartjs-2';
-import { Select, Option } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -95,18 +103,21 @@ Key factors influencing this trend may include recent product improvements, mark
       </CardHeader>
       <CardContent>
         <div className="flex space-x-4 mb-6">
-          <Select
-            options={[
-              { label: '1 Week', value: '1W' },
-              { label: '1 Month', value: '1M' },
-              { label: '3 Months', value: '3M' },
-              { label: '6 Months', value: '6M' },
-              { label: '1 Year', value: '1Y' },
-            ]}
-            defaultValue={timeScale}
-            onValueChange={setTimeScale}
-            placeholder="Select Time Period"
-          />
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select timeframe" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Timeframe</SelectLabel>
+                <SelectItem value="1W">1 Week</SelectItem>
+                <SelectItem value="1M">1 Month</SelectItem>
+                <SelectItem value="3M">3 Months</SelectItem>
+                <SelectItem value="6M">6 Months</SelectItem>
+                <SelectItem value="1Y">1 Year</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         
         {rankings && rankings.length > 0 ? (

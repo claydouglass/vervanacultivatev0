@@ -6,7 +6,15 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Select, Option } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const batchData = {
   "Kandy Terpz (Room 101)": [
@@ -61,15 +69,19 @@ export default function Financials() {
     <main className="flex-1 overflow-y-auto p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Financials</h2>
       <div className="mb-6">
-        <Select
-          options={Object.keys(batchData).map((batchName) => ({
-            label: batchName,
-            value: batchName,
-          }))}
-          defaultValue={selectedBatch}
-          onValueChange={(value) => setSelectedBatch(value as BatchName)}
-          placeholder="Select batch"
-        />
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select batch" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Batch</SelectLabel>
+              {(Object.keys(batchData) as BatchName[]).map((batchName) => (
+                <SelectItem key={batchName} value={batchName}>{batchName}</SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card>

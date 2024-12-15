@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 type Suggestion = {
@@ -66,49 +66,63 @@ export default function Recommendations() {
       <CardContent>
         <div className="flex space-x-4 mb-4">
           {/* Product Select */}
-          <Select
-            options={mockProductData.map((product) => ({
-              label: product.name,
-              value: product.id,
-            }))}
-            defaultValue={selectedProduct}
-            onValueChange={(value) => {
-              setSelectedProduct(value);
-              // Update batch and geography when product changes
-              const newProduct = mockProductData.find((p) => p.id === value);
-              if (newProduct) {
-                setSelectedBatch(newProduct.batches[0]?.id || '');
-                setSelectedGeography(newProduct.geographies[0] || '');
-              }
-            }}
-            placeholder="Select product"
-          />
+          <Select onValueChange={(value) => {
+            setSelectedProduct(value);
+            // Update batch and geography when product changes
+            const newProduct = mockProductData.find((p) => p.id === value);
+            if (newProduct) {
+              setSelectedBatch(newProduct.batches[0]?.id || '');
+              setSelectedGeography(newProduct.geographies[0] || '');
+            }
+          }}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select product" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Products</SelectLabel>
+                {mockProductData.map((product) => (
+                  <SelectItem key={product.id} value={product.id}>
+                    {product.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           {/* Batch Select */}
-          <Select
-            options={
-              currentProduct?.batches.map((batch) => ({
-                label: batch.name,
-                value: batch.id,
-              })) || []
-            }
-            defaultValue={selectedBatch}
-            onValueChange={setSelectedBatch}
-            placeholder="Select batch"
-          />
+          <Select onValueChange={setSelectedBatch}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select batch" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Batches</SelectLabel>
+                {currentProduct?.batches.map((batch) => (
+                  <SelectItem key={batch.id} value={batch.id}>
+                    {batch.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           {/* Geography Select */}
-          <Select
-            options={
-              currentProduct?.geographies.map((geo) => ({
-                label: geo,
-                value: geo,
-              })) || []
-            }
-            defaultValue={selectedGeography}
-            onValueChange={setSelectedGeography}
-            placeholder="Select geography"
-          />
+          <Select onValueChange={setSelectedGeography}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select geography" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Geographies</SelectLabel>
+                {currentProduct?.geographies.map((geo) => (
+                  <SelectItem key={geo} value={geo}>
+                    {geo}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           {/* Comparison Button */}
           <Button onClick={() => setShowComparison(!showComparison)}>

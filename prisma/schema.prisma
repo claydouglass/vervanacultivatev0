@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Handler {
+  id        String   @id @default(cuid())
+  name      String
+  company   String
+  address   String
+  email     String
+  phone     String
+  role      String   // supplier, distributor, warehouse, customer
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  originShipments      Shipment[] @relation("ShipmentOrigin")
+  destinationShipments Shipment[] @relation("ShipmentDestination")
+  routePoints          RoutePoint[]
+}
+
+model Shipment {
+  id          String   @id @default(cuid())
+  status      String   // pending, in_transit, completed, alert
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  origin      Handler     @relation("ShipmentOrigin", fields: [originId], references: [id])
+  originId    String
+  destination Handler     @relation("ShipmentDestination", fields: [destinationId], references: [id])
+  destinationId String
+  routePoints RoutePoint[]
+  readings    EnvironmentalReading[]
+}
+
+model RoutePoint {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  timeAtLocation Int  // minutes
+  transitTimeToNext Int? // minutes
+  expectedArrivalTime DateTime
+  expectedDepartureTime DateTime
+  expectedTemperatureMin Float
+  expectedTemperatureMax Float
+  expectedHumidityMin Float
+  expectedHumidityMax Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  shipment   Shipment @relation(fields: [shipmentId], references: [id])
+  shipmentId String
+  handler    Handler  @relation(fields: [handlerId], references: [id])
+  handlerId  String
+}
+
+model EnvironmentalReading {
+  id          String   @id @default(cuid())
+  temperature Float
+  humidity    Float
+  timestamp   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  shipment   Shipment @relation(fields: [shipmentId], references: [id])
+  shipmentId String
+}
+
+model Route {
+  id        String   @id @default(cuid())
+  name      String
+  stops     Json     // Will store the RoutePoint array as JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -2,7 +2,15 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Genetic = {
@@ -101,15 +109,21 @@ export default function GeneticsPage() {
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">Genetics</h1>
 
-      <Select
-        options={mockGenetics.map((genetic) => ({
-          label: genetic.name,
-          value: genetic.id,
-        }))}
-        defaultValue={selectedGenetic}
-        onValueChange={setSelectedGenetic}
-        placeholder="Select Genetic"
-      />
+      <Select onValueChange={setSelectedGenetic}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select Genetic" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Genetic Strains</SelectLabel>
+            {mockGenetics.map((genetic) => (
+              <SelectItem key={genetic.id} value={genetic.id}>
+                {genetic.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
       {currentGenetic && (
         <Tabs defaultValue="performance" className="w-full">

@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { Plus, Mail, Phone, Globe, Edit, Trash2, Share2, Star } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.js";
-import { Button } from "@/components/ui/button.js";
-import { Input } from "@/components/ui/input.js";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.js";
-import { Label } from "@/components/ui/label.js";
-import { Checkbox } from "@/components/ui/checkbox.js";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.js";
-import { Badge } from "@/components/ui/badge.js";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { supabase } from '@/lib/supabase';
 import { BusinessPartner, PartnerContact, PartnerType } from '@/types/partner';
 

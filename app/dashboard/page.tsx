@@ -3,14 +3,14 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "../../components/ui/scroll-area.js";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { BarChart, Leaf, DollarSign, ClipboardList, Users, Settings, Calendar } from "lucide-react";
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "../../components/ui/progress.js";
+import { Progress } from "@/components/ui/progress";
 import Image from 'next/image';
-import { Checkbox } from "../../components/ui/checkbox.js";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Headline Metrics Data
 const headlineMetrics = {
@@ -35,7 +35,7 @@ const rooms = [
     vpd: 1.5,
     quality: 9.1,
     yield: 35,
-    image: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2040.jpg",
+    image: "/Day 40.jpg",
     color: '#4CAF50', // Updated to match primary color
     flowerAnalysis: "The Kandy Terpz flowers are showing excellent development at day 40 of flowering. Trichome production is abundant, with approximately 70% of the trichomes displaying a milky appearance. The calyxes are swollen, and the pistils are about 60% amber, suggesting the flowers are nearing harvest readiness.",
     aiSuggestions: [
@@ -57,7 +57,7 @@ const rooms = [
     vpd: 1.1,
     quality: 8.9,
     yield: 32,
-    image: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2050.jpg",
+    image: "/Day 50.jpg",
     color: '#FFA500', // Orange accent
     flowerAnalysis: "Papaya Terpz plants are in late flowering stage, showing dense bud formation and rich terpene profiles. The trichomes are mostly cloudy with some amber starting to appear, indicating peak potency is approaching.",
     aiSuggestions: [
@@ -79,7 +79,7 @@ const rooms = [
     vpd: 1.2,
     quality: 8.5,
     yield: 28,
-    image: "https://github.com/claydouglass/vervanacultivatev0/raw/main/Day%2010.jpg",
+    image: "/Day 10.jpg",
     color: '#98FF98', // Light green
     flowerAnalysis: "Mint Terpz is experiencing healthy vegetative growth, with robust leaf development and strong root systems. The plants show no signs of nutrient deficiencies or pest issues.",
     aiSuggestions: [
@@ -271,7 +271,6 @@ export default function Dashboard() {
                       height={150}
                       className="rounded-md mb-4"
                       style={{ objectFit: 'cover' }}
-                      unoptimized // Add this to bypass Next.js image optimization for external URLs
                     />
                     <div className="text-center">
                       <h3 className="font-medium text-lg" style={{ color: room.color }}>
